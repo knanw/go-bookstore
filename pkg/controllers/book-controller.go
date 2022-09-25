@@ -40,8 +40,7 @@ func CreateBook(w http.ResponseWriter, r *http.Request) {
 	utils.ParseBody(r, CreateBook)
 	b := CreateBook.CreateBook()
 	res, _ := json.Marshal(b)
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(http.StatusOK)
+	w.WriteHeader(http.StatusCreated)
 	w.Write(res)
 }
 
@@ -68,18 +67,18 @@ func UpdateBook(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		fmt.Println("error while parsing")
 	}
-	bookDetails, db := models.GetBookById(ID)
+	bookDetail, db := models.GetBookById(ID)
 	if updateBook.Name != "" {
-		bookDetails.Name = updateBook.Name
+		bookDetail.Name = updateBook.Name
 	}
 	if updateBook.Author != "" {
-		bookDetails.Author = updateBook.Author
+		bookDetail.Author = updateBook.Author
 	}
 	if updateBook.Publication != "" {
-		bookDetails.Publication = updateBook.Publication
+		bookDetail.Publication = updateBook.Publication
 	}
-	db.Save(&bookDetails)
-	res, _ := json.Marshal(bookDetails)
+	db.Save(&bookDetail)
+	res, _ := json.Marshal(bookDetail)
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
 	w.Write(res)
